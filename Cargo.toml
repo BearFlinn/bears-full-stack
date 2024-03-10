@@ -1,0 +1,60 @@
+[package]
+name = "bears-full-stack"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+axum = { version = "0.7.4", optional = true }
+console_error_panic_hook = "0.1.7"
+leptos = "0.6.9"
+leptos_axum = { version = "0.6.9", optional = true }
+leptos_meta = "0.6.9"
+leptos_router = "0.6.9"
+tokio = { version = "1.36.0", features = ["rt-multi-thread"], optional = true }
+wasm-bindgen = "=0.2.92"
+thiserror = "1.0.57"
+tracing = { version = "0.1.40", optional = true }
+tower = { version = "0.4.13", optional = true }
+tower-http = { version = "0.5.2", features = ["fs"], optional = true }
+hyper = { version = "1.2.0", features = ["http1"], optional = true }
+
+[features]
+hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
+ssr = [
+    "dep:axum",
+    "dep:tokio",
+    "dep:tower",
+    "dep:tower-http",
+    "dep:leptos_axum",
+    "leptos/ssr",
+    "leptos_meta/ssr",
+    "leptos_router/ssr",
+    "dep:tracing",
+]
+
+[profile.wasm-release]
+inherits = "release"
+opt-level = 'z'
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[package.metadata.leptos]
+
+bin-features = ["ssr"]
+style-file = "src/view/styling/main.scss"
+assets-dir = "src/view/assets"
+site-addr = "127.0.0.1:8000"
+site-root = "target/site"
+site-pkg-dir = "pkg"
+output-name = "bears-leptos-project"
+lib-features = ["hydrate"]
+lib-profile-release = "wasm-release"
+
+[env]
+LEPTOS_SASS_VERSION = "1.71.0"
