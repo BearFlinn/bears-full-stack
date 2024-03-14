@@ -10,32 +10,30 @@ pub fn DisplayCard(
 ) -> impl IntoView {
     let link_atr = link.clone();
     let title = link_title.clone();
+    // Check if link is provided, if so, check if title is provided. If not, throw an error
+    if !link_atr.is_empty() && title.is_none() {
+        logging::log!("DisplayCard: title is required if link is provided.");
+    }
     // If no link is provided, render the card as a static card
     if link.is_empty() {
-        view! {
+        return view! {
             <div class="static-card">
                 <div class="card-content">
-                   || {children()}
+                   {children()}
                 </div>
             </div>
         };
-    } else {
-        // Check if link is external, if so, set target to _blank. (Opens in new tab)
-        // Otherwise, set target to _self. (Stays in same tab, used for site navigation)
-        let target_attr = if link_is_external { "_blank" } else { "_self" };
-        // Render the card as a clickable card if a link is provided.
-        view! {
-            <a class="clickable-card" title=link_title href=link target=target_attr>
+    }
+    let target_attr = if link_is_external { "_blank" } else { "_self" };
+    return view! {
+        <div class="clickable-card">
+            <a class="card-link" title=link_title href=link target=target_attr>
                 <div class="card-content">
-                   || {children()}
+                    {children()}
                 </div>
             </a>
-        };
-    }
-    // Check if link is provided, if so, check if title is provided. If not, throw an error
-    if link_atr.is_empty() && title.is_none() {
-        logging::log!("DisplayCard: title is required if link is provided.");
-    }
+        </div>
+     };
 }
 
 /// A grid of cards that will auto-resize based on the number of columns.

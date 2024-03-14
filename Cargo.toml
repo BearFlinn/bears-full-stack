@@ -15,6 +15,7 @@ leptos = "0.6.9"
 leptos_axum = { version = "0.6.9", optional = true }
 leptos_meta = "0.6.9"
 leptos_router = "0.6.9"
+leptos-use = "0.10.5"
 tokio = { version = "1.36.0", features = ["rt-multi-thread"], optional = true }
 wasm-bindgen = "=0.2.92"
 thiserror = "1.0.57"
@@ -56,5 +57,5 @@ output-name = "bears-leptos-project"
 lib-features = ["hydrate"]
 lib-profile-release = "wasm-release"
 
-[env]
+[package.metadata.sass]
 LEPTOS_SASS_VERSION = "1.71.0"

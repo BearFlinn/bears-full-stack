@@ -1,0 +1,129 @@
+@import '../colors.scss';
+
+.home {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    .hero {
+        display: grid;
+        grid-template-columns: 67% 33%;
+        align-items: center;
+
+
+        .background {
+            display: flex;
+            flex-direction: column;
+            height: 80%;
+            background-color: $secondary;
+            justify-content: center;
+            border-top-left-radius: 25px;
+            border-bottom-left-radius: 25px;
+        
+            .tagline {
+                background-color: $accent;
+                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                padding: 5px 0px 5px 0px;
+                @media (max-width: 1024px) {
+                    font-size: 70%;
+                }
+            }
+        }
+
+        .profile {
+            display: flex;
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            justify-self: right;
+            border-radius: 7%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+        }
+    }
+    
+    .about {
+        display: flex;
+        flex-direction: column;
+        margin: 2% 0%;
+    
+        .content {
+            display: grid;
+            grid-template-columns: 65% 1fr;
+            align-items: center;
+            @media (max-width: 1024px) {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .description {
+                text-align: left;
+                @media (min-width: 1024px) {
+                    padding-right: 10px;
+                    border-right: 3px solid $highlight;
+                }
+            }
+
+            .clickable-card {
+                display: flex;
+                flex-direction: column;
+                height: 80%;
+                background-color: $accent;
+
+                .click-me {
+                    font-weight: bold;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    .what-i-care-about {
+        display: flex;
+        flex-direction: column;
+        margin: 2% 0%;
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 60%;
+            align-items: center;
+
+            @media (max-width: 1024px) {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .my-values {
+                background-color: $secondary;
+                border-radius: 10px;
+            }
+
+            .static-card {
+                display: flex;
+                flex-direction: column;
+                height: 1fr;
+                background-color: $accent2;
+
+                h3 {
+                    font-style: italic;
+                }
+            }
+
+            .dnd {
+                display: flex;
+                width: 100%;
+                height: auto;
+                overflow: hidden;
+                justify-self: right;
+                align-self: center;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+                border-top-right-radius: 15px;
+                border-bottom-right-radius: 15px;
+
+                @media (max-width: 1024px) {
+                    display: none;
+                }
+            }
+        }
+    }
+}

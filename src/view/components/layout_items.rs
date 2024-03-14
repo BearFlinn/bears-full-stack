@@ -1,4 +1,5 @@
-use leptos::*;
+use leptos::{html::Div, *};
+use leptos_use::on_click_outside;
 
 // The navigation menu
 #[component]
@@ -28,6 +29,35 @@ pub fn Sidebar() -> impl IntoView {
         </div>
     }
 }
+
+// Mobile menu
+#[component]
+pub fn MobileNav() -> impl IntoView {
+    let (is_nav_open, set_nav_open) = create_signal(false);
+    let toggle_nav = move |_| set_nav_open.update(|open| *open = !*open);
+    let menu_ref = create_node_ref::<Div>();
+    let _ = on_click_outside(menu_ref, move |_| set_nav_open.set(false));
+
+    view! {
+        <div class="mobile-nav-overlay" style={move || {if is_nav_open.get() {"opacity: 1"} else {"opacity: 0"}}}/>
+        <div class="mobile-nav">
+            <button 
+            class="nav-toggle" 
+            on:click=toggle_nav
+            title="Toggle Navigation Menu"
+            style={move || {if is_nav_open.get() {"display: none"} else {"display: block"}}}>
+                <i class="material-icons">"menu"</i>
+            </button>
+            <div node_ref=menu_ref
+            class={move || {if is_nav_open.get() {"nav-open"} else {"nav-closed"}}}
+            on:click=toggle_nav
+            >
+                <NavMenu/>
+            </div>
+        </div>
+    }
+}
+    
 
 // The social media buttons
 #[component]

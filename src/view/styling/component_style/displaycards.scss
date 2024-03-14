@@ -1,0 +1,68 @@
+@import '../colors.scss';
+.static-card {
+    display: flex;
+    flex-direction: column;
+    background-color: $secondary;
+    padding: 15px;
+    margin: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+
+    .title {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+}
+
+.clickable-card {
+    display: flex;
+    flex-direction: column;
+    background-color: $secondary;
+    margin: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    transition: 0.15s;
+    text-decoration: none;
+    backface-visibility: hidden;
+
+    &:hover {
+        transform: scale3d(1.05, 1.05, 1.05);
+    }
+
+    &:target {
+        transform: scale3d(1.05, 1.05, 1.05 );
+    }
+
+    .card-link {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+        }
+        
+        .title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    }
+
+}
+
+.card-layout {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    .grid-cols-1 { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr));}
+    .grid-cols-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));}
+    .grid-cols-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));}
+    .grid-cols-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));}
+
+    .flex-row { flex-direction: row;}
+    .flex-col { flex-direction: column;}
+}
+ 

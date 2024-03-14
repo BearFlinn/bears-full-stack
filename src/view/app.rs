@@ -1,6 +1,7 @@
 use leptos::*;
 use leptos_router::*;
 use leptos_meta::*;
+use leptos_use::use_media_query;
 
 use crate::view::components::*;
 use crate::view::pages::*;
@@ -9,6 +10,8 @@ use crate::view::pages::*;
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta description, etc.
     provide_meta_context();
+
+    let is_mobile = use_media_query("(max-width: 768px)");
 
     view! {
         // Sets the page title (Text on the tab)
@@ -31,18 +34,20 @@ pub fn App() -> impl IntoView {
 
         <Router>
             <div class="app">
-                <Sidebar/>
-                <div class="pages">
-                    <div class="page-content">
-                        <Routes>
-                            <Route path="" view=Home/>
-                            <Route path="portfolio" view=Portfolio/>
-                            <Route path="resume" view=Resume/>
-                            <Route path="contact" view=Contact/>
-                            <Route path="playground" view=Playground/>
-                        </Routes>
+                <div class={move || {if is_mobile.get() {"app-mobile"} else {"app-desktop"}}}>
+                    {move || {if is_mobile.get() {view! {<MobileNav/>}} else {view! {<Sidebar/>}}}}
+                    <div class="pages">
+                        <div class="page-content">
+                            <Routes>
+                                <Route path="" view=Home/>
+                                <Route path="portfolio" view=Portfolio/>
+                                <Route path="resume" view=Resume/>
+                                <Route path="contact" view=Contact/>
+                                <Route path="playground" view=Playground/>
+                            </Routes>
+                        </div>
+                        <Footer/>
                     </div>
-                    <Footer/>
                 </div>
             </div>
         </Router>
