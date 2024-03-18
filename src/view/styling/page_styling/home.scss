@@ -61,6 +61,7 @@
                 @media (min-width: 1024px) {
                     padding-right: 10px;
                     border-right: 3px solid $highlight;
+                    font-size: 1.1em;
                 }
             }
 
@@ -123,6 +124,50 @@
                 @media (max-width: 1024px) {
                     display: none;
                 }
+            }
+        }
+    }
+
+    .what-i-do {
+        display: flex;
+        flex-direction: column;
+        z-index: 1;
+        margin: 2% 0%;
+
+        .content {
+            position: relative;
+            display: flex;
+            align-items: center;
+          
+            .cards {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                width: 100%;
+                margin: 0% 2%;
+    
+                @media (max-width: 1024px) {
+                    display: flex;
+                    flex-direction: column;
+                }
+    
+                .clickable-card {
+                    z-index: 2;
+                    border-radius: 10px;
+
+                    .click-me {
+                        font-weight: bold;
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            .background-bar {
+                position: absolute;
+                display: flex;
+                z-index: 1;
+                background-color: $highlight;
+                height: 30%;
+                width: 100%;
             }
         }
     }

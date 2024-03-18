@@ -33,24 +33,36 @@ pub fn Sidebar() -> impl IntoView {
 // Mobile menu
 #[component]
 pub fn MobileNav() -> impl IntoView {
+    // State to keep track of whether the menu is open or closed
     let (is_nav_open, set_nav_open) = create_signal(false);
+
+    // Function to toggle the menu open/closed
     let toggle_nav = move |_| set_nav_open.update(|open| *open = !*open);
+
+    // Reference to the menu element
     let menu_ref = create_node_ref::<Div>();
+
+    // Listener to close the menu when the user clicks outside of it
     let _ = on_click_outside(menu_ref, move |_| set_nav_open.set(false));
 
     view! {
-        <div class="mobile-nav-overlay" style={move || {if is_nav_open.get() {"opacity: 1"} else {"opacity: 0"}}}/>
+        // Overlay to darken the background when the menu is open
+        <div class="mobile-nav-overlay" 
+            style={move || {if is_nav_open.get() {"opacity: 1"} else {"opacity: 0"}}}/> 
+        // The menu itself
         <div class="mobile-nav">
+            // Button to toggle the menu open/closed
             <button 
-            class="nav-toggle" 
-            on:click=toggle_nav
-            title="Toggle Navigation Menu"
-            style={move || {if is_nav_open.get() {"display: none"} else {"display: block"}}}>
+                class="nav-toggle"
+                on:click=toggle_nav
+                title="Toggle Navigation Menu"
+                style={move || {if is_nav_open.get() {"display: none"} else {"display: flex"}}}>
                 <i class="material-icons">"menu"</i>
             </button>
+            // The actual menu
             <div node_ref=menu_ref
-            class={move || {if is_nav_open.get() {"nav-open"} else {"nav-closed"}}}
-            on:click=toggle_nav
+                class={move || {if is_nav_open.get() {"nav-open"} else {"nav-closed"}}}
+                on:click=toggle_nav
             >
                 <NavMenu/>
             </div>

@@ -1,0 +1,92 @@
+//carousel.scss
+@import '../colors.scss';
+
+.carousel {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+
+    .slides {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .slide-active {
+            opacity: 1;
+            transition: 0.3s ease-out;
+        }
+
+        .slide-inactive-left {
+            opacity: 0;
+            transform: translateX(30vw);
+            transition: 0.3s ease-out;
+        }
+
+        .slide-inactive-right {
+            opacity: 0;
+            transform: translateX(-30vw);
+            transition: 0.3s ease-out;
+        }
+
+        .slide-entering-left {
+            opacity: 0.5;
+            transform: translateX(15vw);
+            transition: 0.3s ease-in;
+        }
+
+        .slide-entering-right {
+            opacity: 0.5;
+            transform: translateX(-15vw);
+            transition: 0.3s ease-in;
+        }
+
+        .slide-exiting-left {
+            opacity: 0.5;
+            transform: translateX(15vw);
+            transition: 0.3s ease-in;
+        }
+
+        .slide-exiting-right {
+            opacity: 0.5;
+            transform: translateX(-15vw);
+            transition: 0.3s ease-in;
+        }
+
+        .slide-reset-left {
+            opacity: 0;
+            transform: translateX(-30vw);
+        }
+
+        .slide-reset-right {
+            opacity: 0;
+            transform: translateX(30vw);
+        }
+    }
+
+    .carousel-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        appearance: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        border: 0;
+        padding: 0;
+        background-color: transparent;
+        font-size: 36px;
+        transition: 0.3s;
+        cursor: pointer;
+    
+        .material-icons {
+            color: $highlight;
+            font-size: 36px;
+        }
+    
+        &:hover {
+            background-color: rgba($accent2, 0.274);
+        }
+    }
+}

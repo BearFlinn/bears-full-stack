@@ -18,7 +18,7 @@ pub fn Home() -> impl IntoView {
                 <h1>"About Me"</h1>
                 <div class="content">
                     <p class="description">
-                        "Lifelong gamer and tech enthusiast with a proven track record in IT, esports, and technical communication. From building computers and Minecraft servers alongside my dad to competing in Overwatch esports, I've continuously refined my technical, leadership, and problem-solving skills. My experience at STEP honed my ability to research complex topics and break them down, while my time in esports developed team leadership and mentorship strengths.  Now, as a technical writer specializing in gaming and IT, I'm dedicated to translating complex concepts into clear, engaging documentation."
+                        "Chronically curious lifelong gamer with a passion for teaching others. What started with building computers with my Dad or Minecraft servers for my friends has become so much more. My time in IT and eSports has shown me the power of technology and gaming to bring people together. Now, I’m on a mission to demystify those industries and make them more accessible to the average person. As a technical writer, I have a practiced talent for making even the most dry and dense subjects engaging and accessible. If you need compelling technical writing or gaming content, I’m your guy. "
                     </p>
                     <DisplayCard
                         link = "/resume".to_string()
@@ -56,6 +56,32 @@ pub fn Home() -> impl IntoView {
                         </DisplayCard>
                     </div>
                     <img src="playing-dnd.jpg" alt="Bear Flinn Playing Dungeons and Dragons" class="dnd"/>
+                </div>
+            </div>
+            <div class="what-i-do">
+                <h1>"What I Do"</h1>
+                <div class="content">
+                    <div class="cards">
+                        <DisplayCard
+                                link = "/portfolio".to_string()
+                                link_is_external = false
+                                link_title = "Portfolio".to_string()
+                            >
+                                <h2 class="title">"Freelance Writer"</h2>
+                                <p>"I'm a technical writer specializing in creating engaging, accessible content for the gaming and tech industries. With a unique blend of expertise in IT, eSports, and interpersonal communication, I help businesses break down complex topics into clear, compelling content."</p>
+                                <p class="click-me">"Check out my Portfolio"</p>
+                            </DisplayCard>
+                            <DisplayCard
+                                link = "https://grizzlysgamingden.com/".to_string()
+                                link_is_external = true
+                                link_title = "Grizzly's Gaming Den".to_string()
+                            >
+                                <h2 class="title">"Business Owner"</h2>
+                                <p>"Grizzly’s Gaming Den is a passion project that aims to address America’s need for inclusive 3rd places. By building a community focused game store that puts people first I’m creating an inclusive and accessible place that anyone can come to forge new connections."</p>
+                                <p class="click-me">"Click to Learn More"</p>
+                            </DisplayCard>
+                    </div>
+                    <div class="background-bar"></div>
                 </div>
             </div>
 

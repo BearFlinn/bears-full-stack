@@ -10,11 +10,23 @@
     width: 100%;
     min-height: 100vh;
 
+    @media (max-width: 1024px) {
+        grid-template-rows: auto 1fr auto;
+
+        .mobile-warning {
+            background-color: $accent2;
+        }
+    }
+
     .page-content {
         display: flex;
         flex-direction: column;
         justify-self: center;
         margin: 5% 5% 5% 5%;
+
+        @media (max-width: 1024px) {
+            grid-row: 2;
+        }
 
         @media (min-width: 1024px) {
             max-width: 70%;

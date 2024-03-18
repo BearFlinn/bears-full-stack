@@ -37,6 +37,10 @@ pub fn App() -> impl IntoView {
                 <div class={move || {if is_mobile.get() {"app-mobile"} else {"app-desktop"}}}>
                     {move || {if is_mobile.get() {view! {<MobileNav/>}} else {view! {<Sidebar/>}}}}
                     <div class="pages">
+                        <div class="mobile-warning" style={move || {if is_mobile.get() {"display: block"} else {"display: none"}}}>
+                            <h3>"Warning: WIP"</h3>
+                            <p>"The mobile version of this site is under development, please use the desktop version for the best experience."</p>
+                        </div>
                         <div class="page-content">
                             <Routes>
                                 <Route path="" view=Home/>
