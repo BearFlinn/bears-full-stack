@@ -7,7 +7,9 @@ async fn main() {
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use bears_full_stack::view::App;
     use bears_full_stack::controller::fileserv::file_and_error_handler;
+    use bears_full_stack::model::*;
     
+    let db_connection = database::connect().unwrap();
     let conf = get_configuration(Some("Cargo.toml")).await.unwrap();
     let leptos_options = conf.leptos_options;
     let addr = leptos_options.site_addr;

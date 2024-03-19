@@ -1,3 +1,4 @@
+pub mod model;
 pub mod view;
 #[cfg(feature = "ssr")]
 pub mod controller;

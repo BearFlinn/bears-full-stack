@@ -23,6 +23,7 @@ tracing = { version = "0.1.40", optional = true }
 tower = { version = "0.4.13", optional = true }
 tower-http = { version = "0.5.2", features = ["fs"], optional = true }
 hyper = { version = "1.2.0", features = ["http1"], optional = true }
+rusqlite = { version = "0.31.0", features = ["bundled"] }
 
 [features]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
