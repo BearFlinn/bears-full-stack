@@ -62,6 +62,17 @@ pub fn get_sample_by_id(conn: &Connection, id: i32) -> Result<Sample> {
     Ok(sample)
 }
 
+pub fn get_all_sample_titles(conn: &Connection) -> Result<Vec<String>> {
+    let mut stmt = conn.prepare("SELECT title FROM samples")?;
+    let titles = stmt
+        .query_map([], |row| {
+            Ok(row.get(0)?)
+        })?
+        .map(|row| row.unwrap())
+        .collect();
+    Ok(titles)
+}
+
 pub fn update_sample(conn: &Connection, id: i32, title: &str, content: &str) -> Result<()> {
     conn.execute(
         "UPDATE samples SET title = ?1, content = ?2 WHERE id = ?3",
