@@ -28,6 +28,7 @@ rusqlite = { version = "0.31.0", features = ["bundled"], optional = true }
 pulldown-cmark = "0.10.0"
 serde = "1.0.197"
 serde_derive = "1.0.197"
+reqwest = { version = "0.12.0", features = ["json"] }
 
 [features]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
