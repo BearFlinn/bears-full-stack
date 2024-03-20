@@ -1,4 +1,3 @@
-/* 
 use rusqlite::{params, Connection, Result};
 
 #[derive(Debug)]
@@ -16,7 +15,7 @@ pub fn connect() -> Result<Connection> {
         "CREATE TABLE IF NOT EXISTS samples (
             id        INTEGER PRIMARY KEY,
             title     TEXT NOT NULL,
-            content   TEXT NOT NULL
+            content   TEXT NOT NULL,
             description   TEXT NOT NULL
         )",
         [] // No parameters for this SQL statement
@@ -86,4 +85,3 @@ pub fn delete_sample(conn: &Connection, id: i32) -> Result<()> {
     conn.execute("DELETE FROM samples WHERE id = ?1", params![id])?;
     Ok(())
 }
-*/

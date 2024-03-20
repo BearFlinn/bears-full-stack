@@ -2,12 +2,12 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
-    use axum::routing::get;
+    use axum::routing::{get, post};
     use axum::Router;
     use leptos::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use bears_full_stack::view::App;
-    use bears_full_stack::controller::{file_and_error_handler, apis::urmom::ur_mom};
+    use bears_full_stack::controller::{file_and_error_handler, apis::*};
 
     
     let conf = get_configuration(Some("Cargo.toml")).await.unwrap();
@@ -16,7 +16,9 @@ async fn main() {
     let routes = generate_route_list(App);
 
     let apis = Router::new()
-        .route("/ur-mom", get(ur_mom));
+        .route("/ur-mom", get(ur_mom))
+        .route("/writing-sample", post(submit_form))
+        .route("/sample-titles", get(get_titles));
 
     let view_router = Router::new()
         .leptos_routes(&leptos_options, routes, App)
@@ -24,7 +26,7 @@ async fn main() {
         .with_state(leptos_options);
 
     let app = Router::new()
-        .merge(apis)
+        .nest("/api", apis)
         .merge(view_router);
        
 
