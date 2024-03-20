@@ -1,3 +1,4 @@
+/* 
 use axum::{
     extract::Extension,
     Json,
@@ -10,3 +11,4 @@ async fn get_samples_handler(Extension(conn): Extension<Connection>) -> Json<Vec
     let samples = get_all_samples(&conn).unwrap();
     Json(samples)
 }
+*/

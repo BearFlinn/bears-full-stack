@@ -1,3 +1,4 @@
+/* 
 use rusqlite::{params, Connection, Result};
 
 #[derive(Debug)]
@@ -85,3 +86,4 @@ pub fn delete_sample(conn: &Connection, id: i32) -> Result<()> {
     conn.execute("DELETE FROM samples WHERE id = ?1", params![id])?;
     Ok(())
 }
+*/
