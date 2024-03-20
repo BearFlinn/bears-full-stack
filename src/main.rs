@@ -2,11 +2,12 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
+    use axum::routing::get;
     use axum::Router;
     use leptos::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use bears_full_stack::view::App;
-    use bears_full_stack::controller::fileserv::file_and_error_handler;
+    use bears_full_stack::controller::{file_and_error_handler, apis::urmom::ur_mom};
 
     
     let conf = get_configuration(Some("Cargo.toml")).await.unwrap();
@@ -17,11 +18,14 @@ async fn main() {
     let apis = Router::new()
         .route("/ur-mom", get(ur_mom));
 
-    let app = Router::new()
-        .nest("/api", apis)
+    let view_router = Router::new()
         .leptos_routes(&leptos_options, routes, App)
         .fallback(file_and_error_handler)
         .with_state(leptos_options);
+
+    let app = Router::new()
+        .merge(apis)
+        .merge(view_router);
        
 
     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
