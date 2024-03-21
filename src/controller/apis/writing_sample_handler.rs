@@ -5,7 +5,7 @@ use std::io::{BufReader, Read};
 use pulldown_cmark::Parser;
 use serde::Serialize;
 
-use crate::model::database;
+use crate::model::{connection, samples};
 
 fn md_to_html(md_content: &str) -> String {
     let mut options = pulldown_cmark::Options::empty();
@@ -56,7 +56,7 @@ pub async fn submit_form(mut multipart: Multipart) -> impl IntoResponse {
         file_content
     };
 
-    let conn = match database::connect() {
+    let conn = match connection::connect() {
         Ok(conn) => conn,
         Err(err) => {
             eprintln!("Failed to connect to the database: {}", err);
@@ -64,7 +64,7 @@ pub async fn submit_form(mut multipart: Multipart) -> impl IntoResponse {
         }
     };
 
-    match database::insert_sample(&conn, &title, &content, &description) {
+    match samples::insert_sample(&conn, &title, &content, &description) {
         Ok(()) => {
             // Insertion successful
             (StatusCode::OK, "Form submitted successfully!").into_response()
@@ -85,7 +85,7 @@ struct TitleResponse {
 }
 
 pub async fn get_titles() -> impl IntoResponse {
-    let conn = match database::connect() {
+    let conn = match connection::connect() {
         Ok(conn) => conn,
         Err(err) => {
             eprintln!("Failed to connect to the database: {}", err);
@@ -93,7 +93,7 @@ pub async fn get_titles() -> impl IntoResponse {
         }
     };
 
-    let titles = match database::get_all_sample_titles(&conn) {
+    let titles = match samples::get_all_sample_titles(&conn) {
         Ok(titles) => titles,
         Err(err) => {
             eprintln!("Failed to retrieve sample titles from the database: {}", err);

@@ -1,4 +1,5 @@
 use rusqlite::{params, Connection, Result};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug)]
 pub struct Sample {
@@ -6,22 +7,6 @@ pub struct Sample {
     pub title: String,
     pub content: String,
     pub description: String,
-}
-
-pub fn connect() -> Result<Connection> {
-    let conn = Connection::open("writing.db")?;
-
-    conn.execute(
-        "CREATE TABLE IF NOT EXISTS samples (
-            id        INTEGER PRIMARY KEY,
-            title     TEXT NOT NULL,
-            content   TEXT NOT NULL,
-            description   TEXT NOT NULL
-        )",
-        [] // No parameters for this SQL statement
-    )?;
-
-    Ok(conn)
 }
 
 pub fn insert_sample(conn: &Connection, title: &str, content: &str, description: &str) -> Result<()> {
@@ -60,6 +45,11 @@ pub fn get_sample_by_id(conn: &Connection, id: i32) -> Result<Sample> {
             })
         })?;
     Ok(sample)
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+struct TitleResponse {
+    titles: Vec<String>,
 }
 
 pub fn get_all_sample_titles(conn: &Connection) -> Result<Vec<String>> {
