@@ -2,8 +2,10 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
-    use axum::routing::{get, post};
-    use axum::Router;
+    use axum::{
+        routing::{get, post}, 
+        Router
+    };
     use leptos::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use bears_full_stack::view::App;
@@ -18,7 +20,9 @@ async fn main() {
     let apis = Router::new()
         .route("/ur-mom", get(ur_mom))
         .route("/writing-sample", post(submit_form))
-        .route("/sample-titles", get(get_titles));
+        .route("/sample-data", get(get_sample_data))
+        .route("/sample-urls", get(get_sample_url))
+        .route("/sample-content/:url", get(get_sample_content));
 
     let view_router = Router::new()
         .leptos_routes(&leptos_options, routes, App)

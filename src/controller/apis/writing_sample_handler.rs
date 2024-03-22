@@ -1,9 +1,9 @@
-use axum::Json;
-use axum::{extract::Multipart, response::IntoResponse};
-use axum::http::StatusCode;
+use axum::{
+    extract::{Multipart, Path}, http::StatusCode, response::IntoResponse, Json
+};
+
 use std::io::{BufReader, Read};
 use pulldown_cmark::Parser;
-use serde::Serialize;
 
 use crate::model::{connection, samples};
 
@@ -79,12 +79,7 @@ pub async fn submit_form(mut multipart: Multipart) -> impl IntoResponse {
     (StatusCode::OK, "Form submitted successfully!").into_response()
 }
 
-#[derive(Serialize)]
-struct TitleResponse {
-    titles: Vec<String>,
-}
-
-pub async fn get_titles() -> impl IntoResponse {
+pub async fn get_sample_data() -> impl IntoResponse {
     let conn = match connection::connect() {
         Ok(conn) => conn,
         Err(err) => {
@@ -92,16 +87,41 @@ pub async fn get_titles() -> impl IntoResponse {
             return (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error").into_response();
         }
     };
+    let result = samples::get_sample_titles_and_descriptions(&conn);
+    match result {
+        Ok(samples) => (StatusCode::OK, Json(samples)).into_response(),
+        Err(_) => (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error").into_response(),
+    }
+}
 
-    let titles = match samples::get_all_sample_titles(&conn) {
-        Ok(titles) => titles,
+pub async fn get_sample_content(
+    Path(url): Path<String>,
+) -> impl IntoResponse {
+    let conn = match connection::connect() {
+        Ok(conn) => conn,
         Err(err) => {
-            eprintln!("Failed to retrieve sample titles from the database: {}", err);
+            eprintln!("Failed to connect to the database: {}", err);
             return (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error").into_response();
         }
     };
+    let result = samples::get_sample_content_from_url(&conn, &url);
+    match result {
+        Ok(samples) => (StatusCode::OK, Json(samples)).into_response(),
+        Err(_) => (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error").into_response(),
+    }
+}
 
-    let titles_response = TitleResponse { titles };
-
-    Json(titles_response).into_response()
+pub async fn get_sample_url() -> impl IntoResponse {
+    let conn = match connection::connect() {
+        Ok(conn) => conn,
+        Err(err) => {
+            eprintln!("Failed to connect to the database: {}", err);
+            return (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error").into_response();
+        }
+    };
+    let result = samples::get_sample_urls(&conn);
+    match result {
+        Ok(samples) => (StatusCode::OK, Json(samples)).into_response(),
+        Err(_) => (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error").into_response(),
+    }
 }

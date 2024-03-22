@@ -1,66 +1,83 @@
 use rusqlite::{params, Connection, Result};
 use serde::{Deserialize, Serialize};
+use crate::model::database::utils::sanitize_title;
 
 #[derive(Debug)]
 pub struct Sample {
     pub id: i32,
     pub title: String,
+    pub sanitized_title: String,
     pub content: String,
     pub description: String,
 }
 
 pub fn insert_sample(conn: &Connection, title: &str, content: &str, description: &str) -> Result<()> {
+    let sanitized_title = sanitize_title(title);
     conn.execute(
-        "INSERT INTO samples (title, content, description) VALUES (?1, ?2, ?3)",
-        params![title, content, description],
+        "INSERT INTO samples (title, sanitized_title, content, description) VALUES (?1, ?2, ?3, ?4)",
+        params![title, sanitized_title, content, description],
     )?;
     Ok(())
 }
 
-pub fn get_all_samples(conn: &Connection) -> Result<Vec<Sample>> {
-    let mut stmt = conn.prepare("SELECT id, title, content FROM samples")?;
-    let samples = stmt
-        .query_map([], |row| {
-            Ok(Sample {
-                id: row.get(0)?,
-                title: row.get(1)?,
-                content: row.get(2)?,
-                description: row.get(3)?,
-            })
-        })?
-        .map(|row| row.unwrap())
-        .collect();
-    Ok(samples)
+#[derive(Serialize, Deserialize, Clone)]
+pub struct SampleURL {
+    pub url: String,
 }
 
-pub fn get_sample_by_id(conn: &Connection, id: i32) -> Result<Sample> {
-    let mut stmt = conn.prepare("SELECT id, title, content FROM samples WHERE id = ?1")?;
-    let sample = stmt
-        .query_row(params![id], |row| {
-            Ok(Sample {
-                id: row.get(0)?,
-                title: row.get(1)?,
-                content: row.get(2)?,
-                description: row.get(3)?,
-            })
-        })?;
-    Ok(sample)
+pub fn get_sample_urls(conn: &Connection) -> Result<Vec<SampleURL>> {
+    let mut stmt = conn.prepare("SELECT sanitized_title FROM samples")?;
+    let sample_url = stmt
+    .query_map(params![], |row| {
+        let url: String = row.get(0)?;
+        Ok(SampleURL {
+            url,
+        })
+    })?
+    .collect::<Result<Vec<SampleURL>>>()?;
+    Ok(sample_url)
 }
 
 #[derive(Serialize, Deserialize, Clone)]
-struct TitleResponse {
-    titles: Vec<String>,
+pub struct SampleContent {
+    pub content: String,
 }
 
-pub fn get_all_sample_titles(conn: &Connection) -> Result<Vec<String>> {
-    let mut stmt = conn.prepare("SELECT title FROM samples")?;
-    let titles = stmt
+
+pub fn get_sample_content_from_url(conn: &Connection, url: &str) -> Result<SampleContent> {
+    let mut stmt = conn.prepare(format!("SELECT content FROM samples WHERE sanitized_title = '{}'", url).as_str())?;
+    let sample_content = stmt
+    .query_row([], |row| {
+        let content: String = row.get(0)?;
+        Ok(SampleContent {
+            content,
+        })
+    })?;
+    Ok(sample_content)
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct SampleTitleAndDescription {
+    pub title: String,
+    pub description: String,
+    pub sanitized_title: String,
+}
+
+pub fn get_sample_titles_and_descriptions(conn: &Connection) -> Result<Vec<SampleTitleAndDescription>> {
+    let mut stmt = conn.prepare("SELECT title, sanitized_title, description FROM samples")?;
+    let results = stmt
         .query_map([], |row| {
-            Ok(row.get(0)?)
+            let title: String = row.get(0)?;
+            let sanitized_title = row.get(1)?;
+            let description: String = row.get(2)?;
+            Ok(SampleTitleAndDescription {
+                title,
+                description,
+                sanitized_title,
+            })
         })?
-        .map(|row| row.unwrap())
-        .collect();
-    Ok(titles)
+        .collect::<Result<Vec<SampleTitleAndDescription>>>()?;
+    Ok(results)
 }
 
 pub fn update_sample(conn: &Connection, id: i32, title: &str, content: &str) -> Result<()> {

@@ -1,12 +1,13 @@
 use rusqlite::{Connection, Result};
 
 pub fn connect() -> Result<Connection> {
-    let conn = Connection::open("writing.db")?;
+    let conn = Connection::open("./src/model/database/bears-portfolio.db")?;
 
     conn.execute(
         "CREATE TABLE IF NOT EXISTS samples (
             id        INTEGER PRIMARY KEY,
             title     TEXT NOT NULL,
+            sanitized_title   TEXT NOT NULL,
             content   TEXT NOT NULL,
             description   TEXT NOT NULL
         )",

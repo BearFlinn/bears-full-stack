@@ -48,6 +48,7 @@ pub fn App() -> impl IntoView {
                                 <Route path="resume" view=Resume/>
                                 <Route path="contact" view=Contact/>
                                 <Route path="playground" view=Playground/>
+                                <SampleRoutes/>
                             </Routes>
                         </div>
                         <Footer/>

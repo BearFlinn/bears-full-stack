@@ -52,7 +52,7 @@ pub fn CardGrid(
                  // having a min width of 0 and a max width of 1fr (takes up as much space as it can).
                  style=format!("grid-template-columns: repeat({}, minmax(0, 1fr));", col_count)>
                 // Render the children inside of the grid
-                || {children()}
+                {children()}
             </div>
         </div>
     }
